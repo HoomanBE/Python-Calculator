@@ -1,4 +1,4 @@
-#🧮 Python-Calculator
+# 🧮 Python-Calculator
 A simple command-line calculator written in Python with error handling and continuous operations.
 
 The project allows users to:
