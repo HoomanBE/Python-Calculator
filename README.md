@@ -1,8 +1,5 @@
-# Python-Calculator
+#🧮 Python-Calculator
 A simple command-line calculator written in Python with error handling and continuous operations.
-# 🧮 Python Calculator
-
-This is a command-line calculator written in Python.
 
 The project allows users to:
 - Perform basic and advanced mathematical operations
