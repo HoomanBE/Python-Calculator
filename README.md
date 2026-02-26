@@ -1,13 +1,15 @@
-# 🧮 Python-Calculator
-A simple command-line calculator written in Python with error handling and continuous operations.
+# 🧮 Python Calculator
 
-The project allows users to:
+A simple command-line calculator written in Python with proper error handling and continuous operations.
+
+## 🚀 Features
 - Perform basic and advanced mathematical operations
 - Continue calculations using the previous result
-- Handle errors such as division by zero
-- Restart or exit the program when an error occurs
+- Handles division by zero errors
+- Option to restart or exit the program
+- Clean and modular code structure
 
-## 🚀 Supported Operators
+## 🔢 Supported Operators
 - Addition (+)
 - Subtraction (-)
 - Multiplication (*)
@@ -16,13 +18,11 @@ The project allows users to:
 - Modulus (%)
 - Power (**)
 
-## 📌 Features
-- User-friendly command-line interface
-- Error handling using try/except
-- Modular design using functions
-
 ## ▶ How to Run
-Make sure Python is installed, then run:
+
+Make sure Python is installed on your system.
+
+Run the following command in your terminal:
 
 ```bash
 python calculator.py
