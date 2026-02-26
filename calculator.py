@@ -1,155 +1,114 @@
 def main():
-    num_ope = three_numbers_operators()
-    count = 0
-    number1 = 0
-    t_or_f = 0
+    print("Simple Python Calculator")
+    print("------------------------")
+
+    current_result = None
+
     while True:
-        question = input("Do you want to put more numbers? (Y/N) : ")
-        if question.upper() not in ["Y","N"]:
-            print("Invalid Input try again")
-            continue
-        while True:
-            if question.upper() == "Y":
-                if count == 0:
-                    number1 += num_ope[0]
-                    result = calculation(number1 , num_ope[1] , num_ope[2])
-                    if result == "Error!!!":
-                        problem = input("Your previous operation resulted in division by zero," 
-                    "or has a problem Do you wana restart or shut down? (R,S) : ")
-                        if problem.upper() not in ["R","S"]:
-                                print("Invalid Input try again")
-                                continue
-                        print(f'{num_ope[0]} {num_ope[1]} {num_ope[2]} = {result}')
-                        print(f"Current result is : {result}")    
-                        true_or_false = problem_error(problem)
-                        t_or_f = 1
-                        start_again = True
-                        count += 1
-                        break 
-                elif count != 0:
-                    print(f'{result} {num_ope2[0]} {num_ope2[1]} = {x}')
-                    result = x
-              
-                num_ope2 = two_numbers_operators()
-                print(f"your operation is {result} {num_ope2[0]} {num_ope2[1]}")
-                x = calculation(result , num_ope2[0] , num_ope2[1])
-                count += 1
-                start_again = True
-                break            
-            elif question.upper() == "N":
-                if count == 0:
-                    number1 += num_ope[0]
-                elif count != 0:
-                    print(result , num_ope2[0] , num_ope2[1],"= " , x)
-                    final_answer = x
-                    start_again = False
-                    break    
-                result = calculation(number1 , num_ope[1] , num_ope[2])
-                if result == "Error!!!":
-                    while True:
-                        problem = input("Your previous operation resulted in division by zero," 
-                        "or has a problem Do you wana restart or shut down? (R,S) : ")  
-                        if problem.upper() not in ["R","S"]:
-                            print("Invalid Input try again")
-                            continue  
-                        true_or_false = problem_error(problem)
-                        t_or_f = 1
-                        break   
-                print(f'{num_ope[0]} {num_ope[1]} {num_ope[2]} = {result}')
-                final_answer = result
-                start_again = False
-                break
+        try:
+            if current_result is None:
+                current_result = get_initial_operation()
             else:
-                print("Invalid input, please enter Y or N.")
-                continue
-        if t_or_f == 1:    
-            if true_or_false == True:
-                print("Restarting.....")
-                num_ope = three_numbers_operators()
-                count = 0
-                number1 = 0
-                t_or_f = 0
-                continue
-            if true_or_false == False:
-                print("Exting program......")
+                current_result = get_next_operation(current_result)
+
+            print(f"Current result: {current_result}")
+
+        except ZeroDivisionError:
+            print("Error: Division by zero is not allowed.")
+            if not ask_restart():
+                print("Exiting program...")
                 break
-        if start_again == True:
+            current_result = None
             continue
-        elif start_again == False:
-            break        
-    return final_answer   
 
-     
-def three_numbers_operators():
+        if not ask_continue():
+            print("Final result:", current_result)
+            break
+
+
+# -----------------------------
+# Input Handling Functions
+# -----------------------------
+
+def get_initial_operation():
+    number1 = get_number("Enter first number: ")
+    operator = get_operator()
+    number2 = get_number("Enter second number: ")
+
+    result = calculate(number1, operator, number2)
+    print(f"{number1} {operator} {number2} = {result}")
+    return result
+
+
+def get_next_operation(current_result):
+    operator = get_operator()
+    number2 = get_number("Enter next number: ")
+
+    result = calculate(current_result, operator, number2)
+    print(f"{current_result} {operator} {number2} = {result}")
+    return result
+
+
+def get_number(prompt):
     while True:
-        operators_list = ["+" , "-" , "*" , "/" , "//" , "%" , "**"]
         try:
-            number1 = float(input("Enter your number : "))
-            operators = input("Enter your operator (+ , - , * , / , // , % , **) : ")
-            if operators not in operators_list :
-                print(f"{operators} is Invalid operators please choose from {operators_list} ")
-                continue
-            number2 = float(input("Enter your next number : "))
+            return float(input(prompt))
         except ValueError:
-            print("Invalid input. Please enter a valid integer.")
-            continue    
-        print(f"your operation is {number1} {operators} {number2}")
-        break
-    return number1 , operators , number2    
+            print("Invalid number. Please try again.")
 
-def two_numbers_operators():
-    while True:
-        operators_list = ["+" , "-" , "*" , "/" , "//" , "%" , "**"]
-        try:
-            operators = (input("Enter your operator (+ , - , * , / , // , % , **) : "))
-            if operators not in operators_list :
-                print(f"{operators} is Invalid operators please choose from {operators_list} ")
-                continue
-            number2 = float(input("Enter your next number : "))
-            break
-        except ValueError:
-            print("Invalid input. Please enter a valid integer.")
-            continue    
-    return operators , number2    
-                  
-def calculation(number1 , operators , number2):
-    result = 0   
-    try:
-        if operators == "+":
-            result += number1 + number2
-        elif operators == "-":  
-            result += number1 - number2
-        elif operators == "*":  
-            result += number1 * number2
-        elif operators == "%":  
-            result += number1 % number2       
-        elif operators == "**":  
-            result += number1 ** number2       
-        elif operators == "/":  
-            result += number1 / number2
-        elif operators == "//":  
-            result += number1 // number2     
-    except ZeroDivisionError:
-        print("Division by zero is not allowed"  )
-        return "Error!!!"  
-    except:
-        print("An error occurred during the calculation")
-        return "Error!!!"  
-    return result                  
 
-def problem_error(problem):
+def get_operator():
+    valid_operators = ["+", "-", "*", "/", "//", "%", "**"]
+
     while True:
-        if problem.upper() == "R":
-            return True
-            break
-        elif problem.upper() == "S":
-            return False
-            break
-        else:
-            print("Invalid Input try again")
-            continue      
-    
-print(main())                              
-        
-                
-            
+        operator = input("Enter operator (+, -, *, /, //, %, **): ")
+        if operator in valid_operators:
+            return operator
+        print("Invalid operator. Try again.")
+
+
+# -----------------------------
+# Calculation Logic
+# -----------------------------
+
+def calculate(number1, operator, number2):
+    if operator == "+":
+        return number1 + number2
+    elif operator == "-":
+        return number1 - number2
+    elif operator == "*":
+        return number1 * number2
+    elif operator == "/":
+        return number1 / number2
+    elif operator == "//":
+        return number1 // number2
+    elif operator == "%":
+        return number1 % number2
+    elif operator == "**":
+        return number1 ** number2
+
+
+# -----------------------------
+# Control Flow Helpers
+# -----------------------------
+
+def ask_continue():
+    while True:
+        answer = input("Do you want to continue? (Y/N): ").upper()
+        if answer in ["Y", "N"]:
+            return answer == "Y"
+        print("Invalid input. Enter Y or N.")
+
+
+def ask_restart():
+    while True:
+        answer = input("Do you want to restart? (Y/N): ").upper()
+        if answer in ["Y", "N"]:
+            return answer == "Y"
+        print("Invalid input. Enter Y or N.")
+
+
+# -----------------------------
+
+if __name__ == "__main__":
+    main()
